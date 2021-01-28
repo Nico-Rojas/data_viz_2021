@@ -1,0 +1,79 @@
+---
+title: "TA Session: Tools for data exploration and ggplot"
+subtitle: "QMSS Data Visualization - Spring 2021"
+author: "Nico Rojas"
+
+widgets: []
+mode: selfcontained
+always_allow_html: yes
+output:
+  ioslides_presentation:
+    incremental: false
+    smaller: false
+---
+
+```{r packages, message = FALSE, warning = FALSE, echo=FALSE}
+require(knitr)
+require(leaflet)
+require(shiny)
+require(rgdal)
+require(RColorBrewer)
+```
+
+
+```{r Setup, include=FALSE, results='hide', warning=FALSE}
+## Normal Setup From Here
+library(knitr)
+
+opts_chunk$set(fig.path="images/",
+               cache.path="cache/",
+            #   dev=c("png","pdf"),
+            #  fig.width=5,
+            #  fig.height=4.5,
+            #  dpi=300,
+            #  fig.show="hold",
+            #  fig.lp="fig:",
+               cache=TRUE,
+            #  par=TRUE,
+               echo=TRUE,
+               message=FALSE,
+               warning=FALSE)
+```
+
+## Outline
+
+- Tools that you need for this course 
+- Tools for Data Exploration
+- Example: Visualizing the World Development Indicators in Shiny
+ 
+ 
+ 
+# Final Project
+
+## Final Presentations - Details
+
+- Each group has 10min time to present and for a short Q&A.
+- Prepare to present for a few minutes. Better less, to allow for a bit of discussion.
+- Remember: Everyone can look at your output even before class or with you.
+
+## Feedback to other project
+
+- Each student will provide comments about the visualizations used in another project. These comments can then be used to inform some final adjustments before submission.  
+- We will post links to all final projects on a website.
+- Everyone will receive an email specifying which project they should comment on.
+- Comments are anonymous and shared on Github.
+
+
+## How is the final project evaluated?
+
+1. **Visualization**  
+    - Is your visualization effective in answering the questions you intended to address? Is the storytelling clear?  
+    - Do the visualizations follow visualization principles? 
+    - Is it informative and interesting for a user? 
+    - Does it allow some sensible interactive exploration?  
+2. **Implementation**  
+    - What is the quality of your implementation? 
+    - Is it appropriately polished, robust, and reliable?  
+3. **Presentation**     
+    - Are your web site and presentation clear, engaging, and effective?
+    
