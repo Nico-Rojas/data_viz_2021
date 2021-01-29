@@ -208,36 +208,44 @@ Very quick review based on Exercise 2. Check the following table with commands.
  </thead>
 <tbody>
   <tr>
-   <td style="text-align:left;"> Everything in the Introduction to R in Data Camp </td>
-   <td style="text-align:left;"> Check the outline of the data camp course and do whatever you don't know </td>
+   <td style="text-align:left;"> str() </td>
+   <td style="text-align:left;"> Check the structure of the data </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> filter() </td>
-   <td style="text-align:left;"> subset rows (observations) </td>
+   <td style="text-align:left;"> glimpse() </td>
+   <td style="text-align:left;"> Check the structure of the data (dplyr) </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> select() </td>
-   <td style="text-align:left;"> sorts rows </td>
+   <td style="text-align:left;"> head() </td>
+   <td style="text-align:left;"> Check the first few rows </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> arrange() </td>
-   <td style="text-align:left;"> keep or drop columns (observations, tip: use it as dplyr::select) </td>
+   <td style="text-align:left;"> tail() </td>
+   <td style="text-align:left;"> Check the last few rows </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> mutate() </td>
-   <td style="text-align:left;"> generates a column </td>
+   <td style="text-align:left;"> view() </td>
+   <td style="text-align:left;"> View the data 1 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> group_by() and summarise() </td>
-   <td style="text-align:left;"> group_by() gives the instruction to operate within subsets, summarise() collapses the data by using a function </td>
+   <td style="text-align:left;"> just run the name of the object </td>
+   <td style="text-align:left;"> View the data 2 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> n() </td>
-   <td style="text-align:left;"> counts </td>
+   <td style="text-align:left;"> names(), as.data.frame(names()) </td>
+   <td style="text-align:left;"> Names of the variables </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Everything about factors (Chapter 15) </td>
-   <td style="text-align:left;"> categorical variables with a fix set of values </td>
+   <td style="text-align:left;"> summary() </td>
+   <td style="text-align:left;"> General description of all the variables*** </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> unique() </td>
+   <td style="text-align:left;"> Dplyr command that can be used to check for duplicates (crucial for merging) </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> table() </td>
+   <td style="text-align:left;"> Frequency table or two way table (use exclude = NULL for showing NA) </td>
   </tr>
 </tbody>
 </table>

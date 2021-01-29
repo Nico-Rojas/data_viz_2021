@@ -195,6 +195,7 @@ Very quick review based on Exercise 2. Check the following table with commands.
 ```{r, echo = F}
 col1 <- c("str()","glimpse()","head()", "tail()","view()","just run the name of the object","names(), as.data.frame(names())", "summary()", "unique()", "table()")
 col2 <- c("Check the structure of the data","Check the structure of the data (dplyr)", "Check the first few rows", "Check the last few rows", "View the data 1", "View the data 2", "Names of the variables",  "General description of all the variables***", "Dplyr command that can be used to check for duplicates (crucial for merging)", "Frequency table or two way table (use exclude = NULL for showing NA)") 
+table <- data.frame(col1 = col1, col2 = col2)
 ```
 
 ```{r}
