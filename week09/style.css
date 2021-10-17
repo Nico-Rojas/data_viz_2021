@@ -1,0 +1,25 @@
+body{
+  font-family: Helvetica;
+  font-size: 16pt;
+}
+
+
+.exercise {
+    padding-left: 2em;
+    border: 1px solid;
+    border-color: #ffffff;
+    /* color: #ffffff; white*/
+    color: #696969; /* dark grey*/
+    /* background-color: #26a69a; dark teal*/
+    background-color: #96D3CE; medium teal
+    /* background-color: #D3EDEA; */
+    
+}
+
+.exercise2 {
+    padding-left: 2em;
+    border: 1px solid;
+    border-color: #ffffff;
+    color: #660066; 
+    background-color: #CC99FF;  
+}

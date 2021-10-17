@@ -1,0 +1,100 @@
+---
+title: "TA Section: Some notes on text analysis"
+subtitle: "QMSS Data Visualization - Spring 2021 - Week 09"
+author:  "Nico Rojas - nr2670@tc.columbia.edu"
+output:
+  html_document:
+    toc: true
+    self_contained: true
+    keep_md: true
+    css: style.css
+  ioslides_presentation:
+    smaller: yes
+    keep_md: true
+  pdf_document:
+    toc: true
+    df_print: kable
+urlcolor: red
+font-family: Helvetica
+autosize: yes
+fontsize: 50pt
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache = T, message = F, warning = F)
+```
+
+```{r lib, echo = F}
+library(leaflet.extras)
+library(sp)
+library(magrittr)
+library(dplyr)
+library(readxl)
+library(kableExtra)
+```
+
+$~$
+
+# Text Fromats in  R for data visualization. 
+
+$~$
+
+There is ***no single text format*** that can be used for all the possible text analysis that can be done in R. The [CRAN Task View for Natural Language Processing](https://cran.r-project.org/web/views/NaturalLanguageProcessing.html) website constantly updates a list of all the relevants packages that can be used in R for text analysis. Note that on this website you can find RWeka, tidytext, tm, quanteada and many of the format that were used in class.  
+ 
+When one wants to do some text analysis, it can be a good idea to know what data do you have in hand and what text format do you need for your analysis. The book [Text mining in R: A Tidy approach](https://www.tidytextmining.com/) by Julia Silge and David Robinson makes this case very nicely in chapter 5. 
+
+Let's have a look to their flowchart:  
+
+```{r, echo=FALSE}
+url <- "https://www.tidytextmining.com/images/tmwr_0501.png"
+```
+![](`r url`)
+
+In this workflow you see functions, and packages on the edges and text formats on the nodes. It's a good idea to know where are you at, to which node you want to go, and what route you will need to take to get there. 
+
+Chapter 5 has nice explanations of how to go from one format to another. Now, here I will just briefly make some explanations of why you may want to go to one or another formats.  
+
+***NOTE***: Although the workchart is very useful, the arrow from Text Data to Corpus is missing. The `VCorpus` function from the `tm` package allows you to go from Text Data to a Corpus. There are several examples in the course slides. 
+
+## 1.1 Text Formats: 
+
+Here is a quick summary of the different text formats. 
+
+* ***Text Data***: Just character objects. Probably the most likely place you will start.  
+
+* ***Corpus***: A collection of documents.The `tm` package has a particular Corpus format that allows to have some metadata associated to the corpus (for example: The title of each document). ***Why Corpus?*** It may be easier to organize your data cleaning for building word clouds, or doing sentiment analysis.   
+
+* ***Tidy Text***: “Tidy” means a table with one token per row, where a “token” can be a single word or set of adjacent words.***Why Tidy text?*** Because it's format compatible with all the other parts of the `tidyverse`: dplyr, tidyr, ggplot and broom.  
+
+* ***DTM***: This is a matrix where: each row represents one document (such as a book or article), each column represents one term, and each value (typically) contains the number of appearances of that term in that document. ***Why DTM?*** It's a very common format in text mining packages. You can easily get some measures of sparsity.  
+
+* ***Sentiment Lexicon***: Only words that belong to certain dictionary. (i.e: positive or negative words) 
+
+* ***Summarized text***: Typically word counts. Several analysis need this data to be visualized. ***Why Summarized Text?*** It's what you will use in most visualizations.  
+
+#### On your own {.exercise}  
+* Explain which formats would you use to do a sentiment analysis or a word cloud starting with a collection of texts.  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

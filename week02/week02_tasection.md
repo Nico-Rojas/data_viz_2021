@@ -380,30 +380,6 @@ Run the following code to download an individual data-set for gun-related deaths
 
 ```r
 gun_inddeaths <- read_csv("https://raw.githubusercontent.com/fivethirtyeight/guns-data/master/full_data.csv")
-```
-
-```
-## Warning: Missing column names filled in: 'X1' [1]
-```
-
-```
-## Parsed with column specification:
-## cols(
-##   X1 = col_double(),
-##   year = col_double(),
-##   month = col_character(),
-##   intent = col_character(),
-##   police = col_double(),
-##   sex = col_character(),
-##   age = col_double(),
-##   race = col_character(),
-##   hispanic = col_double(),
-##   place = col_character(),
-##   education = col_character()
-## )
-```
-
-```r
 gun_inddeaths <- gun_inddeaths[,2:dim(gun_inddeaths)[2]]
 ```
 
@@ -521,15 +497,15 @@ It looks, much better: easier to compare between races.
 #### We found a pattern we want to emphasize: {.exercise2} 
 Blacks and Hispanics are less likely to die because of a suicide compare to the rest of the gun related-deaths. 
 
-#### Let's list all the reasons why it still is different get the information we want from it:   
+#### Let's list all the reasons why it still difficult to get the information we want:   
  
-- There is NA category for missing values has very few values. (How do we know?)
+- There is an NA category for missing values that has very few values. (How do we know?)
 - Helping the audience: 
   * Race ordering is alphabetical. We are not "making it easier for the audience" to compare between races.  
   * Intent ordering is alphabetical. We are not "making it easier for the audience" to compare between intents.  
-- The legend "Intent", the title "race" and the title "count" seems unnecessary. 
+- The legend "Intent", the title "race" and the title "count" seem unnecessary. 
 - The labels in the bottom are unreadable
-- Suicides and "less likely" are not emphasized compared to the other types of intents. 
+- "Suicides" and "less likely" are not emphasized compared to the other types of intents. 
 - Can we make some tweaks to make the visualization more: "1) Trustful 2) Functional 3) Beautiful 4) Insightful"?
 
 #### 

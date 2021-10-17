@@ -1,0 +1,272 @@
+---
+title: "TA Section: Plotly"
+subtitle: "QMSS Data Visualization - Spring 2021 - Week 04"
+author:  "Nico Rojas - nr2670@tc.columbia.edu"
+output:
+  html_document:
+    css: style.css
+    toc: true
+    self_contained: true
+    keep_md: true
+  ioslides_presentation:
+    smaller: yes
+    keep_md: true
+  pdf_document:
+    toc: true
+    df_print: kable
+urlcolor: red
+font-family: Helvetica
+autosize: yes
+bibliography: references.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r libraries, message = F, warning = F}
+library(tidyverse)
+library(plotly) 
+library(babynames)
+library(NutrienTrackeR) #Package with nutrition data-set
+```
+
+$~$
+
+## 0. Plotly resources. 
+
+$~$
+
+Some of the resources I find more useful to learn plotly using R:
+
+1. @sievert_interactive_2020 - [plotly for R](https://plotly-r.com/index.html) - A full reference website for using plotly in R. (from the Syllabus)
+2. Paul C. Bauer & Richard Traunmüller (2016) - [Interactive Data Visualization](https://bookdown.org/paulcbauer/idv2/) -  Book with all the material from a Workshop Data Visualization 
+3. The [Plotly R](https://plotly.com/r/) website  
+ 
+This session will rely on this material. 
+
+$~$
+
+## 1. Why ggplotly alone is not enough for implementing interactivity? 
+
+$~$
+
+It's tempting to think that ggploty will cover all the interactivity we might need and will save us the time of learning plotly coding. However, there are at least four reasons 
+
+1) Not all ggplot objects can be converted to plotly objects 
+2) Not all the parts of a ggplot object can be converted to plotly objects. 
+3) Adjusting graphs that come from ggplotly can be cumbersome 
+4) ggplot is not interactive, and therefore some interactive options are missing
+
+## 1.1 ggplotly in combination with plotly syntax 
+
+With respect to 4), we can use an example based on @sievert_interactive_2020 (Ch.33) to show some interactivity that cannot be displayed using ggplotly alone.  
+
+This is an interactive "babynames" graph from week 01 exercise built based on ggplotly. 
+
+```{r,echo = T}
+p <- ggplot(babynames, aes(year, n)) + 
+  geom_line(data = filter(babynames, name=="Alex"), aes(color = sex)) + ggtitle("ggplotly babynames")
+ggplotly(p) 
+```
+
+Note that when you click into one point of the curve you only get data from data of the part of the curve.
+
+***what if you wanted to know what's happening for all the curves for any given year?*** 
+
+That option is not part of ggplot, because ggplot is not interactive. 
+
+You can add plotly code after using ggplotly. We can change the layout to include the desired interactivity with `layout(hovermode = "x")`
+
+```{r}
+ggplotly(p  + ggtitle("ggplotly babynames adding hovermode")) %>%
+  layout(hovermode = "x")
+```
+Other cool alternatives that are only in plotly are including a tool for zooming for a certain range of X's (`rangeslider()`). We can also use the `dynamicTicks = TRUE` option to adjust the xaxis while zooming.  
+
+```{r, echo = T}
+ggplotly(p  + ggtitle("ggplotly babynames adding hovermode and rangeslider")
+         , dynamicTicks = TRUE) %>% 
+  rangeslider() %>%
+  layout(hovermode = "x")
+```
+$~$
+
+## 2. Writing a plotly code   
+
+$~$
+
+### 2.1 - General aspects of plotly coding  
+
+Every aspect of a plotly chart is determined in one of three aspects:  plot_ly(), add_trace() and layout()
+
+In plotly a ***trace*** defines a mapping from data and visuals. Every trace has a type (e.g., histogram, pie, scatter, etc). plot_ly() alone already plots a "trace".  
+
+* If you don't specify a layout(), plotly adds a default layout. 
+* Even if you don't specify a type it will plot a default, unlike ggplot.
+
+```{r, warning = F, message = F, echo = T}
+plot_ly(economics, x = ~date, y = ~uempmed) # We didn't specified the type! Default: Scatterplot 
+```
+
+Also, unlike ggplot, you can use the pipe ( %>% ) and dplyr syntax with plotly coding. For example: 
+
+```{r, echo = T, eval = F}
+#Instead of this:
+plot_ly(economics, x = ~date, y = ~uempmed)
+
+#You can do this: 
+economics %>% 
+  plot_ly(x = ~date, y = ~uempmed)
+```
+
+Also, you can do group_by operations in a syntax: 
+
+```{r, eval = F, echo = T, warning = F, message = F}
+diamonds %>%
+  group_by(depth) %>% 
+  summarise(price = mean(price)) %>%
+  ungroup() %>% 
+  plot_ly(x = ~depth, y = ~price)
+```
+
+One advantage of the integration with dplyr and the pipe is that it allows you avoid using the plotly syntax with several parenthesis.  
+
+Even though just using plotly() already plots a "trace" you can add another one with add_trace(). 
+
+Note, that instead of using add_trace(), there is a family of add functions: add_histogram(), add_bars(), etc .... 
+
+```{r, eval = T}
+set.seed( 123 )
+x = 1 : 100
+y1 = 2*x + rnorm ( 100 )
+y2 = - 2*x + rnorm ( 100 )
+```
+
+Look at this graph:
+
+```{r, echo = T, warning = F, message = F}
+plot_ly( y = y1, x = x , type = "scatter" ) %>%
+add_bars( y = y2 )
+```
+
+It's the same as this graph: 
+
+```{r, echo = T, warning = F, message = F}
+plot_ly( x = x , type = "scatter" ) %>%
+add_trace( y = y2, type = "bar")
+```
+
+***layout()*** apply to the rest of the graph, like the title, axis settings, or annotations
+
+```{r, eval = F, include = F}
+plot_ly(economics, x = ~date, y = ~uempmed) %>% 
+  layout(title = "My beatiful graph")
+```
+
+### 2.2 - Plotly attributes  
+
+***What are all the possible attributes that can be changed?** 
+
+Let's take a look to the following syntax from the plotly website: 
+
+```{r, echo = T, include = T, eval = T, message = F, warning = F}
+# Note: Add: https://plotly.com before most of the links below. 
+
+plot_ly(economics,
+         type = "scatter",        # all "scatter" attributes: https://plotly.com/r/reference/#scatter
+         x = ~date,               # more about scatter's "x": /r/reference/#scatter-x
+         y = ~uempmed,            # more about scatter's "y": /r/reference/#scatter-y
+         name = "unemployment",   # more about scatter's "name": /r/reference/#scatter-name
+         marker = list(           # marker is a named list, valid keys: /r/reference/#scatter-marker
+           color="#862626"        # more about marker's "color" attribute: /r/reference/#scatter-marker-color
+         )) %>% 
+  add_trace(x = ~date,                                         # scatter's "x": /r/reference/#scatter-x
+        y = ~fitted((loess(uempmed ~ as.numeric(date)))),  # scatter's "y": /r/reference/#scatter-y
+        mode = "lines",                                    # scatter's "y": /r/reference/#scatter-mode
+        line = list(                                       # line is a named list, valid keys: /r/reference/#scatter-line
+          color = "#264E86",                               # line's "color": /r/reference/#scatter-line-color
+          dash = "dashed"                                  # line's "dash" property: /r/reference/#scatter-line-dash
+        )
+) %>% 
+  layout(                        # all of layout's properties: /r/reference/#layout
+     title = list(text = "Unemployment", # layout's title: /r/reference/#layout-title
+                  font = list(
+                  size =  20)),
+                  margin = list(autoexpand = T, 
+                                t = 50), # Adds some margin to make the title visible
+     xaxis = list(           # layout's xaxis is a named list. List of valid keys: /r/reference/#layout-xaxis
+        title = "Time",      # xaxis's title: /r/reference/#layout-xaxis-title
+        showgrid = F),       # xaxis's showgrid: /r/reference/#layout-xaxis-showgrid
+     yaxis = list(           # layout's yaxis is a named list. List of valid keys: /r/reference/#layout-yaxis
+        title = "uidx")     # yaxis's title: /r/reference/#layout-yaxis-title
+)
+```
+
+Where are all the possible options? Sieveret recommends using the schema function over looking elsewhere. 
+
+```{r, echo = T}
+plotly::schema()
+```
+```{r}
+url <- "https://drive.google.com/uc?export=download&id=1ssWxnYC4yxMOm-jjtFsRQwLYapeAwsf1"
+```
+![](`r url`)
+
+
+#### Your turn {.exercise} 
+* Copy the syntax from the scatter plot and modify the different attributes. 
+* run schema() in a chunk and look for other attributes that can be modified. Recommendation: Start with the title.
+* Change the type of plot, and look to the different attirbutes available on schema()  
+* Find the "type" of trace that is added to the plot. Is it line?  
+* Find the `hovermode` attirbute used in the first part of the section, and find out other attributes that could be used to combine ggplotly with plotly syntax.
+
+$~$
+
+## 3. An example: Horizontal bar chart    
+
+$~$
+
+In this example we will use a nutrition data-set from the USDA that can be loaded using the `NutrienTrackeR` package. We will graph the top 10 categories of in terms of fat in the United States. 
+
+```{r, echo = T, warning = F, message =  F}
+top10 <- data.frame(food_composition_data$USDA, stringsAsFactors = F) %>% 
+  group_by(food_group) %>%  
+  summarize(mean_fat = mean(as.numeric(Total.lipid..fat...g.), na.rm = T) ) %>% 
+  ungroup() %>% 
+  arrange(desc(mean_fat)) %>% 
+  filter(row_number()<11) %>% 
+  mutate(mean_fat = round(mean_fat, digits = 1))
+```
+
+```{r, echo = T}
+fig1 <- plot_ly(top10, x =  ~mean_fat, y = ~reorder(food_group, mean_fat),
+              type = 'bar', orientation = 'h',
+              marker = list(color = "#fc03df", #Google HEX color picker
+                            line = list(color = 'rgba(50, 171, 96, 1.0)', width = 1))) 
+
+fig1 <- fig1 %>% layout(title = "Top 10 categories of food with more fat in the US\n", 
+                        yaxis = list(title = FALSE, domain= c(10, 67)), 
+                        xaxis = list(title = "grams per 100 grams of food"), 
+                        margin = list( autoexpand = TRUE, t = 80, b = 90), # put some margin on top so the title can be seen  
+                        annotations =   list(x = 1, y = - 0.3, #position of text adjust as needed 
+                text = "<i>Source: USDA Standard reference dataset</i>", # Note the use of HTML language to add italics 
+                showarrow = F, xref='paper', yref='paper', 
+                xanchor='right', yanchor='auto', xshift=0, yshift=0,
+                font=list(size=12)))
+fig1
+```
+
+$~$
+
+## 4. Short survey    
+
+$~$
+
+[Here](https://forms.gle/WPSZBZ5CqvmV4RdT8) a short survey for asynchronous learners. It's anonymous, I just want to check how many people are looking this material and if you have any comment. Thank you!
+
+***
+
+## References
+
+
